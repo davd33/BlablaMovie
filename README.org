@@ -1,0 +1,6 @@
+#+TITLE: BlablaMovie
+
+The user chooses the movie she loves the most.
+
+A specification of what BlablaMovie should do at a high level
+is available [[file:specs/blablamovie.pdf][here]].
