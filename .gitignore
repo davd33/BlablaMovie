@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# TLA
+specs/*.toolbox/*
+!specs/*.toolbox/*[a-z].launch
