@@ -2,5 +2,19 @@
 
 The user chooses the movie she loves the most.
 
+* Project
+
+** Specs
+
+In =/specs=, you'll find useful TLA+ specifications for the project.
+
 A specification of what BlablaMovie should do at a high level
 is available [[file:specs/blablamovie.pdf][here]].
+
+** Backend
+
+The REST API in =/backend= handles calls to OMDb to search existing movies.
+
+** Frontend
+
+A react App is developed in =/frontend=.

@@ -1,7 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { Movie } from './movie.model';
 import { map } from 'rxjs/operators';
-import { identity, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { assert } from './utils';
 
 @Injectable()
 export class AppService {
@@ -9,6 +9,7 @@ export class AppService {
   constructor(private http: HttpService) { }
 
   private searchUrl(key: string, search: string): string {
+    assert(() => key.length > 0);
     return `http://www.omdbapi.com/?apikey=${key}&type=movie&s=${search}`;
   }
 
