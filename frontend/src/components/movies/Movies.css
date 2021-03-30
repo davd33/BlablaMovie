@@ -1,0 +1,30 @@
+.movies-found {
+    display: flex;
+    list-style: none;
+    width: 80%;
+    flex-flow: wrap;
+}
+
+.movies-found li {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 200px;
+}
+
+.movies-found li h1 {
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.movie:hover {
+    background: url(vote.png);
+    background-position-y: 35%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.movie:hover img {
+    opacity: 0.2;
+    cursor: pointer;
+}
