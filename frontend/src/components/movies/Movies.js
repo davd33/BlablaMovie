@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import './Movies.css';
 
-function Movies() {
+export function Movies() {
 
     const [movies, setMovies] = useState([]);
 
@@ -29,5 +29,3 @@ function Movies() {
         </div>
     );
 }
-
-export default App;
