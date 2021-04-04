@@ -11,3 +11,13 @@ GET :backend/users
 
 # Get one
 GET :backend/users/lola
+
+# Log in
+POST :backend/users/login
+:json-ct
+{"userName": "davd", "password": "admin"}
+
+# Log out
+POST :backend/users/logout
+:json-ct
+{"userName": "davd", "token": "1f6c58ea-e93a-46b3-986f-356b3b67e6a0"}

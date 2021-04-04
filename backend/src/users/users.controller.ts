@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { promiseOrThrow } from 'src/utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BlablaUser } from './entities/user.entity';
@@ -26,6 +26,18 @@ export class UsersController {
   async findOne(@Param('name') name: string): Promise<BlablaUser> {
     return await promiseOrThrow(
       () => this.usersService.findOne(name));
+  }
+
+  @Post('login')
+  async login(@Body('userName') userName: string, @Body('password') password: string) {
+    return await promiseOrThrow(
+      () => this.usersService.login(userName, password));
+  }
+
+  @Post('logout')
+  async logout(@Body('userName') userName: string, @Body('token') token: string) {
+    return await promiseOrThrow(
+      () => this.usersService.logout(userName, token));
   }
 
 }
