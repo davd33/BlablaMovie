@@ -1,0 +1,13 @@
+:backend = http://localhost:3001
+:json-ct = Content-Type: application/json
+
+# Create user
+POST :backend/users
+:json-ct
+{"name": "davd", "password": "admin"}
+
+# Get all
+GET :backend/users
+
+# Get one
+GET :backend/users/lola

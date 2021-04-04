@@ -10,4 +10,5 @@ export class AppController {
   getFindMovie(@Query('movieName') movie: string): Observable<any> {
     return this.appService.searchMovie(movie);
   }
+
 }

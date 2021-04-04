@@ -15,6 +15,23 @@ is available [[file:specs/blablamovie.pdf][here]].
 
 The REST API in =/backend= handles calls to OMDb to search existing movies.
 
+*** Database setup
+
+Have an local instance of postgresql running. Create a database named
+=blablamovie= and change the login information in [[file:backend/src/app.module.ts][the app module]] with the
+correct one:
+
+#+BEGIN_SRC typescript
+username: 'postgres',
+password: 'admin',
+#+END_SRC
+
+*** Start
+
+#+BEGIN_SRC sh
+npm run start:dev
+#+END_SRC
+
 ** Frontend
 
 A react App is developed in =/frontend=.

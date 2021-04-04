@@ -21,7 +21,7 @@ export function Movies() {
             {movies.length < 1 ? "No movies found..." : ""}
             <ul className="movies-found">
               {movies.map((m, i) => <li key={m.imdbID+i} onClick={() => voteForMovie(m.imdbID)} className="movie">
-                                      <img src={m.Poster} />
+                                      <img src={m.Poster} alt="" />
                                       <h1>{m.Title} ({m.Year})</h1>
                                     </li>)}
             </ul>
