@@ -27,3 +27,12 @@ hr {
     text-align: right;
     width: 80%;
 }
+
+.welcome-home {
+    width: 80%;
+    margin: auto;
+}
+
+.welcome-home p {
+    text-align: justify;
+}
