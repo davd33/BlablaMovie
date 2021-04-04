@@ -21,3 +21,16 @@ POST :backend/users/login
 POST :backend/users/logout
 :json-ct
 {"userName": "davd", "token": "1f6c58ea-e93a-46b3-986f-356b3b67e6a0"}
+
+# Search Movie
+GET :backend/find-movie?movieName=alien
+
+# Register Movie
+POST :backend/register-movie
+:json-ct
+{ "title": "Alien", "year": "1979","imdbID": "tt0078748",       "type": "movie",       "poster": "https://m.media-amazon.com/images/M/MV5BMmQ2MmU3NzktZjAxOC00ZDZhLTk4YzEtMDMyMzcxY2IwMDAyXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"     }
+
+# Vote
+POST :backend/vote/tt0078748
+:json-ct
+{"userName": "luk", "token": "ec037412-24f0-47c4-85b2-e1949f836b63"}

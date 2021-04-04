@@ -68,24 +68,26 @@ function App() {
                   <Login onSuccess={saveToken}/>
                 </Route>
                 <Route path="/">
-                  <div className="welcome-home">
+                  {isLoggedIn() ?
+                   (<Movies />) :
+                   (<div className="welcome-home">
 
-                    <p>
+                      <p>
 
-                      Hello! You are here to vote for the best movie
-                      of the week.  Indeed, every week, users are given
-                      3 votes to choose 0 to 3 of their favorite movies!
+                        Hello! You are here to vote for the best movie
+                        of the week.  Indeed, every week, users are given
+                        3 votes to choose 0 to 3 of their favorite movies!
 
-                    </p>
+                      </p>
 
-                    <p>
+                      <p>
 
-                      If you're not yet registered, do it now by
-                      clicking <Link to="/register">here</Link>!
+                        If you're not yet registered, do it now by
+                        clicking <Link to="/register">here</Link>!
 
-                    </p>
+                      </p>
 
-                  </div>
+                    </div>)}
                 </Route>
               </Switch>
             </div>
