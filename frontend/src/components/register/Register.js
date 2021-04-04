@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import {
+    useHistory
+} from "react-router-dom";
 
 export function Register({onSuccess}) {
 
@@ -7,10 +10,12 @@ export function Register({onSuccess}) {
     const [name, setName] = useState("");
     const [password, setPw] = useState("");
 
+    const history = useHistory();
+
     const submit = () => {
         axios
             .post(`http://localhost:3001/users`, {name, password})
-            .then(r => onSuccess(r.data))
+            .then(r => onSuccess(history))
             .catch(r => {console.log(r);setErrMsg(`Error: ${r.message}`);});
     };
 
@@ -19,13 +24,13 @@ export function Register({onSuccess}) {
     const passwordChanged = (e) => setPw(e.target.value);
 
     return (
-        <div class="form">
+        <div className="form">
           <div><em>{errMsg}</em></div>
           <label>User name <input type="text" onChange={nameChanged} /></label>
           <br />
           <label>Password <input type="text" onChange={passwordChanged} /></label>
           <br />
-          <div class="submit"><button onClick={submit}>Register</button></div>
+          <div className="submit"><button onClick={submit}>Register</button></div>
         </div>
     );
 }

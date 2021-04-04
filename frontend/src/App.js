@@ -7,16 +7,37 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useLocation,
+    useHistory
 } from "react-router-dom";
+
+function NavLi({title, path, action}) {
+
+    const history = useHistory();
+
+    return (<li className={useLocation().pathname === path ? 'nav-active' : ''}>
+              {!!action ? (<button onClick={() => action(history)}>{title}</button>) : (<Link to={path}>{title}</Link>)}
+            </li>);
+}
 
 function App() {
 
-    const saveToken = (data) => window.localStorage.setItem('token', data.token);
+    const [token, setToken] = useState(window.localStorage.getItem('token'));
 
-    const isLoggedIn = () => window.localStorage.getItem('token') != undefined;
+    const saveToken = (data, history) => {
+        window.localStorage.setItem('token', data.token);
+        setToken(window.localStorage.getItem('token'));
+        history.push('/');
+    };
 
-    const successRegister = "You're now in our user database, navigate to the login page on the navigation menu and log in with your login and password!";
+    const isLoggedIn = () => !!token;
+
+    const clearToken = (history) => {
+        window.localStorage.removeItem('token');
+        setToken(null);
+        history.push('/login');
+    };
 
     return (
         <div className="App">
@@ -24,29 +45,25 @@ function App() {
             <div>
               <nav>
                 <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  {!isLoggedIn &&
-                   (<li>
-                      <Link to="/register">Register</Link>
-                    </li>)}
-                  {!isLoggedIn &&
-                   (<li>
-                      <Link to="/login">Login</Link>
-                    </li>)}
+                  <NavLi title="Home" path="/" />
+                  {!isLoggedIn() &&
+                   <NavLi title="Register" path="/register" />}
+                  {!isLoggedIn() &&
+                   <NavLi title="Log in" path="/login" />}
+                  {isLoggedIn() &&
+                   <NavLi title="Log out" path="/login" action={clearToken} />}
                 </ul>
               </nav>
 
               <Switch>
                 <Route path="/register">
-                  <Register onSuccess={(data) => alert(successRegister)}/>
+                  <Register onSuccess={(history) => history.push('/login')}/>
                 </Route>
                 <Route path="/login">
                   <Login onSuccess={saveToken}/>
                 </Route>
                 <Route path="/">
-                  <div class="welcome-home">
+                  <div className="welcome-home">
 
                     <p>
 
