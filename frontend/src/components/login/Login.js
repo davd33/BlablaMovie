@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-export function Register({onSuccess}) {
+export function Login({onSuccess}) {
 
     const [errMsg, setErrMsg] = useState("");
     const [name, setName] = useState("");
@@ -9,9 +9,9 @@ export function Register({onSuccess}) {
 
     const submit = () => {
         axios
-            .post(`http://localhost:3001/users`, {name, password})
+            .post(`http://localhost:3001/users/login`, {userName: name, password})
             .then(r => onSuccess(r.data))
-            .catch(r => {console.log(r);setErrMsg(`Error: ${r.message}`);});
+            .catch(r => setErrMsg(`Error: ${r.message}`));
     };
 
     const nameChanged = (e) => setName(e.target.value);
@@ -21,11 +21,14 @@ export function Register({onSuccess}) {
     return (
         <div class="form">
           <div><em>{errMsg}</em></div>
-          <label>User name <input type="text" onChange={nameChanged} /></label>
-          <br />
-          <label>Password <input type="text" onChange={passwordChanged} /></label>
-          <br />
-          <div class="submit"><button onClick={submit}>Register</button></div>
+          <label>
+            User name <input type="text" onChange={nameChanged}/>
+          </label>
+          <label>
+            Password <input type="text" onChange={passwordChanged}/>
+          </label>
+
+          <div class="submit"><button onClick={submit}>Sign in!</button></div>
         </div>
     );
 }

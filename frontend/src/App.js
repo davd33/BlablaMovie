@@ -1,39 +1,50 @@
 import React, {useState} from 'react';
 import './App.css';
-import axios from 'axios';
 import {Movies} from './components/movies/Movies.js';
 import {Register} from './components/register/Register.js';
-
-export function Login({onSuccess}) {
-
-    const [errMsg, setErrMsg] = useState("");
-    const [name, setName] = useState("");
-
-    const submit = () => {
-        axios
-            .get(`http://localhost:3001/login?userName=${encodeURI(name)}`)
-            .then(r => onSuccess(r.data))
-            .catch(r => setErrMsg(`Error: ${r.message}`));
-    };
-
-    const nameChanged = (e) => setName(e.target.value);
-
-    return (
-        <div>
-          <div><em>{errMsg}</em></div>
-          <input type="text" onChange={nameChanged}/>
-          <button onClick={submit}>Sign in!</button>
-        </div>
-    );
-}
+import {Login} from './components/login/Login.js';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
 function App() {
 
+    const saveToken = (data) => window.localStorage.setItem('token', data.token);
+
     return (
         <div className="App">
-          <Register onSuccess={(data) => alert(`yay! ${data}`)}/>
-          <hr/>
-          <Login onSuccess={(data) => alert(`logged in! ${data}`)}/>
+          <Router>
+            <div>
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/register">Register</Link>
+                  </li>
+                  <li>
+                    <Link to="/login">Login</Link>
+                  </li>
+                </ul>
+              </nav>
+
+              <Switch>
+                <Route path="/register">
+                  <Register onSuccess={(data) => console.log("registered!")}/>
+                </Route>
+                <Route path="/login">
+                  <Login onSuccess={saveToken}/>
+                </Route>
+                <Route path="/">
+                  Hello world
+                </Route>
+              </Switch>
+            </div>
+          </Router>
         </div>
     );
 }

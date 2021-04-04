@@ -1,0 +1,29 @@
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 1em .5em;
+    color: black;
+    font-size: 1.3em;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+nav ul li a {
+    text-decoration: none;
+}
+
+hr {
+    border: 1px solid black;
+    box-shadow: 0 0 10px black;
+}
+
+.form {
+    display: flex;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    width: 80%;
+}

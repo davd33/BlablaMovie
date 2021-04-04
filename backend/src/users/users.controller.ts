@@ -11,7 +11,6 @@ export class UsersController {
   @Post()
   @HttpCode(201)
   async create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     return await promiseOrThrow(
       () => this.usersService.create(createUserDto));
   }
