@@ -15,7 +15,7 @@ export function Login({onSuccess}) {
     const submit = () => {
         axios
             .post(`http://localhost:3001/users/login`, {userName: name, password})
-            .then(r => onSuccess(r.data, history))
+            .then(r => onSuccess(name, r.data, history))
             .catch(r => setErrMsg(`Error: ${r.message}`));
     };
 

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import './App.css';
 import {Movies} from './components/movies/Movies.js';
 import {Register} from './components/register/Register.js';
@@ -25,10 +26,11 @@ function App() {
 
     const [token, setToken] = useState(window.localStorage.getItem('token'));
 
-    const saveToken = (data, history) => {
+    const saveToken = (userName, data, history) => {
         window.localStorage.setItem('token', data.token);
         setToken(window.localStorage.getItem('token'));
         history.push('/');
+        window.localStorage.setItem('userName', userName);
     };
 
     const isLoggedIn = () => !!token;
@@ -37,6 +39,9 @@ function App() {
         window.localStorage.removeItem('token');
         setToken(null);
         history.push('/login');
+        axios
+            .post(`http://localhost:3001/users/logout`, {userName: window.localStorage.getItem('userName'), token})
+            .catch(r => console.log(`Error: ${r}`));
     };
 
     return (
