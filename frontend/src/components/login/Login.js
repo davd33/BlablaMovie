@@ -16,7 +16,11 @@ export function Login({onSuccess}) {
         axios
             .post(`http://localhost:3001/users/login`, {userName: name, password})
             .then(r => onSuccess(name, r.data, history))
-            .catch(r => setErrMsg(`Error: ${r.message}`));
+            .catch(r => {
+                if (r.response.data.message.startsWith('Could not find any entity of type "BlablaUser"')) {
+                    setErrMsg("Wrong user or password.");
+                }
+            });
     };
 
     const nameChanged = (e) => setName(e.target.value);
@@ -25,12 +29,13 @@ export function Login({onSuccess}) {
 
     return (
         <div className="form">
+          <p>Enter your login information to sign in.</p>
           <div><em>{errMsg}</em></div>
           <label>
             User name <input type="text" onChange={nameChanged}/>
           </label>
           <label>
-            Password <input type="text" onChange={passwordChanged}/>
+            Password <input type="password" onChange={passwordChanged}/>
           </label>
 
           <div className="submit"><button onClick={submit}>Sign in!</button></div>

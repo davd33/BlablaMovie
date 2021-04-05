@@ -16,7 +16,11 @@ export function Register({onSuccess}) {
         axios
             .post(`http://localhost:3001/users`, {name, password})
             .then(r => onSuccess(history))
-            .catch(r => {console.log(r);setErrMsg(`Error: ${r.message}`);});
+            .catch(r => {
+                if (r.response.data.message.startsWith("duplicate key value violates unique constraint")) {
+                    setErrMsg("User already exists.");
+                }
+            });
     };
 
     const nameChanged = (e) => setName(e.target.value);
@@ -25,10 +29,11 @@ export function Register({onSuccess}) {
 
     return (
         <div className="form">
+          <p>Fill the form in to create your user.</p>
           <div><em>{errMsg}</em></div>
           <label>User name <input type="text" onChange={nameChanged} /></label>
           <br />
-          <label>Password <input type="text" onChange={passwordChanged} /></label>
+          <label>Password <input type="password" onChange={passwordChanged} /></label>
           <br />
           <div className="submit"><button onClick={submit}>Register</button></div>
         </div>

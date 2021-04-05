@@ -59,6 +59,7 @@ export class AppService {
       .leftJoinAndSelect("vote.movie", "m")
       .where(`vote.timestampWithTimezone between '${monday.toISOString()}' and '${sunday.toISOString()}'`)
       .groupBy('m.id')
+      .orderBy({ count: "DESC" })
       .limit(1)
       .getRawMany();
   }
