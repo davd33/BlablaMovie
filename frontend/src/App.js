@@ -4,6 +4,7 @@ import './App.css';
 import {Movies} from './components/movies/Movies.js';
 import {Register} from './components/register/Register.js';
 import {Login} from './components/login/Login.js';
+import {loggedIn, token as tokenLS, userName, clearLoginInfo} from './utils';
 import {
     BrowserRouter as Router,
     Switch,
@@ -18,7 +19,9 @@ function NavLi({title, path, action}) {
     const history = useHistory();
 
     return (<li className={useLocation().pathname === path ? 'nav-active' : ''}>
-              {!!action ? (<button onClick={() => action(history)}>{title}</button>) : (<Link to={path}>{title}</Link>)}
+              {!!action ?
+               (<button onClick={() => action(history)}>{title}</button>) :
+               (<Link to={path}>{title}</Link>)}
             </li>);
 }
 
@@ -26,22 +29,24 @@ function App() {
 
     const [token, setToken] = useState(window.localStorage.getItem('token'));
 
-    const saveToken = (userName, data, history) => {
-        window.localStorage.setItem('token', data.token);
-        setToken(window.localStorage.getItem('token'));
+    const saveToken = (userNameVal, data, history) => {
+        setToken(tokenLS(data.token));
+        userName(userNameVal);
         history.push('/');
-        window.localStorage.setItem('userName', userName);
     };
 
     const isLoggedIn = () => !!token;
 
     const clearToken = (history) => {
-        window.localStorage.removeItem('token');
         setToken(null);
         history.push('/login');
         axios
-            .post(`http://localhost:3001/users/logout`, {userName: window.localStorage.getItem('userName'), token})
+            .post(`http://localhost:3001/users/logout`, {
+                userName: userName(),
+                token: tokenLS()
+            })
             .catch(r => console.log(`Error: ${r}`));
+        clearLoginInfo();
     };
 
     return (

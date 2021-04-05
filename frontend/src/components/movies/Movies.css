@@ -29,10 +29,10 @@
     cursor: pointer;
 }
 
-input {
+.find-movies input {
     border: 0;
     background: black;
-    width: 100%;
+    width: calc(100% - 1em);
     height: 1.5em;
     font-size: 2em;
     color: whitesmoke;
