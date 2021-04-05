@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { UsersService } from './users/users.service';
 import { promiseOrThrow } from './utils';
@@ -18,6 +18,14 @@ export class AppController {
       { userName, token },
       this.usersService,
       () => this.appService.searchMovie(movie, userName));
+  }
+
+  @Get('winner')
+  async winner() {
+    return await promiseOrThrow(
+      null,
+      this.usersService,
+      () => this.appService.winnerCurrentWeek());
   }
 
   @Post('votes-left')

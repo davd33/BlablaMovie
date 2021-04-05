@@ -4,6 +4,7 @@ import './App.css';
 import {Movies} from './components/movies/Movies.js';
 import {Register} from './components/register/Register.js';
 import {Login} from './components/login/Login.js';
+import {Winner} from './components/winner/Winner.js';
 import {token as tokenLS, userName, clearLoginInfo} from './utils';
 import {
     BrowserRouter as Router,
@@ -56,6 +57,7 @@ function App() {
               <nav>
                 <ul>
                   <NavLi title="Home" path="/" />
+                  <NavLi title="Winner of the week" path="/winner" />
                   {!isLoggedIn() &&
                    <NavLi title="Register" path="/register" />}
                   {!isLoggedIn() &&
@@ -66,6 +68,9 @@ function App() {
               </nav>
 
               <Switch>
+                <Route path="/winner">
+                  <Winner />
+                </Route>
                 <Route path="/register">
                   <Register onSuccess={(history) => history.push('/login')}/>
                 </Route>
@@ -81,7 +86,7 @@ function App() {
 
                         Hello! You are here to vote for the best movie
                         of the week.  Indeed, every week, users are given
-                        3 votes to choose 0 to 3 of their favorite movies!
+                        3 votes to choose from 0 to 3 of their favorite movies!
 
                       </p>
 

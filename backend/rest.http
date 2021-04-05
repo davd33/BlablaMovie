@@ -34,3 +34,6 @@ POST :backend/register-movie
 POST :backend/vote/tt0078748
 :json-ct
 {"userName": "luk", "token": "ec037412-24f0-47c4-85b2-e1949f836b63"}
+
+# who is the winner
+GET :backend/winner

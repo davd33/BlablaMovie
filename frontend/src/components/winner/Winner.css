@@ -1,0 +1,22 @@
+.winner {
+    display: flex;
+    list-style: none;
+    width: 200px;
+    flex-flow: wrap;
+    flex-direction: row;
+    flex-direction: column;
+    margin: auto;
+    text-align: center;
+}
+
+.winner li {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 200px;
+}
+
+.winner li h1 {
+    padding: 10px;
+    font-size: 0.9em;
+}

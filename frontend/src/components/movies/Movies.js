@@ -28,7 +28,7 @@ function voteForMovie(movie, nVotesLeft, cb) {
                         .then(r => {
                             console.log(r);
                             // retry
-                            voteForMovie(movie, cb);
+                            voteForMovie(movie, nVotesLeft, cb);
                         })
                         .catch(r => console.log(r));
                 }

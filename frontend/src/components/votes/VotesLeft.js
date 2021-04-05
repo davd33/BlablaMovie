@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './VotesLeft.css';
 
 export function VotesLeft({count}) {

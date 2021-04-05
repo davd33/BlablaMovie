@@ -40,3 +40,7 @@ A react App is developed in =/frontend=.
 
 The backend should check whether the user have enough votes
 left for the current week. It's done on frontend for now.
+
+** TODO check that all API entries are safe from attacks
+
+The REST API endpoints should treat safe input.

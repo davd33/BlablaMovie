@@ -52,6 +52,17 @@ export class AppService {
     return data;
   }
 
+  async winnerCurrentWeek() {
+    const { monday, sunday } = weekPeriod(new Date());
+    return await this.voteRepo.createQueryBuilder('vote')
+      .select('count(*)')
+      .leftJoinAndSelect("vote.movie", "m")
+      .where(`vote.timestampWithTimezone between '${monday.toISOString()}' and '${sunday.toISOString()}'`)
+      .groupBy('m.id')
+      .limit(1)
+      .getRawMany();
+  }
+
   /**
    * Vote for a movie or unvote it.
    */
