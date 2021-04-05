@@ -44,3 +44,9 @@ left for the current week. It's done on frontend for now.
 ** TODO check that all API entries are safe from attacks
 
 The REST API endpoints should treat safe input.
+
+** TODO Improve err messages on register/login
+
+** TODO add number of votes for winner page
+
+** TODO add 2nd/3rd place
