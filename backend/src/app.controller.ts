@@ -17,7 +17,7 @@ export class AppController {
     return await promiseOrThrow(
       { userName, token },
       this.usersService,
-      () => this.appService.searchMovie(movie).toPromise());
+      () => this.appService.searchMovie(movie, userName));
   }
 
   @Post('vote/:imdbID')

@@ -1,18 +1,17 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { assert } from './utils';
+import { assert, weekPeriod } from './utils';
 import { Movie } from './movie.entity';
 import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './vote.entity';
-import { UsersService } from './users/users.service';
 
 @Injectable()
 export class AppService {
 
-  constructor(private http: HttpService,
-    private users: UsersService,
+  constructor(
+    private http: HttpService,
     @InjectRepository(Movie) private movieRepo: Repository<Movie>,
     @InjectRepository(Vote) private voteRepo: Repository<Vote>) { }
 
@@ -21,10 +20,36 @@ export class AppService {
     return `http://www.omdbapi.com/?apikey=${key}&type=movie&s=${search}`;
   }
 
-  searchMovie(title: string): Observable<any> {
+  async searchMovie(title: string, userName: string) {
     const OMDb_KEY = process.env.OMDb_KEY;
-    return this.http.get(this.searchUrl(OMDb_KEY, title))
-      .pipe(map(r => r.data));
+    const omdbResult = await this.http.get(this.searchUrl(OMDb_KEY, title)).toPromise();
+
+    if (omdbResult.data.Response === "False") {
+      return omdbResult.data;
+    }
+
+    let data = omdbResult.data;
+    if (omdbResult.data !== undefined)
+      data = {
+        ...omdbResult.data,
+        Search: await Promise.all(omdbResult.data.Search.map(async (m: any) => {
+
+          const { monday, sunday } = weekPeriod(new Date());
+          const movie: Movie = await this.movieRepo.findOne({ where: { imdbID: m.imdbID } });
+          return {
+            ...m,
+            voted: (await this.voteRepo.count({
+              where: {
+                userName,
+                movie,
+                timestampWithTimezone: Between(monday, sunday)
+              }
+            })) === 1
+          };
+        }))
+      };
+
+    return data;
   }
 
   /**
@@ -35,17 +60,13 @@ export class AppService {
     const movie = await this.movieRepo.findOneOrFail({ where: { imdbID } });
 
     // We count votes for the current week/user/movie
-    const now = new Date();
-    const today = new Date(`${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`);
-    const mondayThisWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1));
-    const sundayThisWeek = new Date(today.setDate(today.getDate() + 7));
-    sundayThisWeek.setTime(sundayThisWeek.getTime() - 1)
+    const { monday, sunday } = weekPeriod(new Date());
 
     const foundVote = await this.voteRepo.count({
       where: {
         userName,
         movie,
-        timestampWithTimezone: Between(mondayThisWeek, sundayThisWeek)
+        timestampWithTimezone: Between(monday, sunday)
       }
     });
 

@@ -49,3 +49,19 @@ export function getWeekNumber(date: Date) {
   // Return array of year and week number
   return [d.getUTCFullYear(), weekNo];
 }
+
+/**
+ * Returns the beginning and end dates of the current week.
+ */
+export function weekPeriod(date: Date) {
+
+  const today = new Date(`${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`);
+  const monday = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+  const sunday = new Date(today.setDate(today.getDate() + 7));
+  sunday.setTime(sunday.getTime() - 1);
+
+  return {
+    monday,
+    sunday
+  };
+}

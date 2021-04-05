@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.voted {
+    text-shadow: 1px 1px yellow;
+}
+
 .find-movies input {
     border: 0;
     background: black;
