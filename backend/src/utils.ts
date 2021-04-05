@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { UsersService } from "./users/users.service";
 
 function isTestEnv() {
   return process.env.ASSERTS === "ON"
@@ -10,8 +11,21 @@ export function assert(predicate: () => boolean, msg = "") {
   }
 }
 
-export async function promiseOrThrow<T>(lambda: () => Promise<T>) {
+export const NO_AUTH_REQUIRED = null;
+
+export async function promiseOrThrow<T>(
+  auth: { userName: string, token: string },
+  users: UsersService,
+  lambda: () => Promise<T>) {
+
   try {
+    if (auth !== null) {
+      const authorized = await users.authorized(auth.userName, auth.token);
+      if (!authorized) {
+        throw new Error("User not logged in.")
+      }
+    }
+
     return await lambda();
   }
   catch (e) {

@@ -1,15 +1,23 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Body, Controller, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import { UsersService } from './users/users.service';
 import { promiseOrThrow } from './utils';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService,
+    private readonly usersService: UsersService) { }
 
-  @Get('find-movie')
-  getFindMovie(@Query('movieName') movie: string): Observable<any> {
-    return this.appService.searchMovie(movie);
+  @Post('find-movie')
+  async getFindMovie(
+    @Query('movieName') movie: string,
+    @Body('userName') userName: string,
+    @Body('token') token: string
+  ) {
+    return await promiseOrThrow(
+      { userName, token },
+      this.usersService,
+      () => this.appService.searchMovie(movie).toPromise());
   }
 
   @Post('vote/:imdbID')
@@ -19,7 +27,9 @@ export class AppController {
     @Body('token') token: string
   ) {
     return await promiseOrThrow(
-      () => this.appService.vote(imdbID, userName, token));
+      { userName, token },
+      this.usersService,
+      () => this.appService.vote(imdbID, userName));
   }
 
   @Post('register-movie')
@@ -28,9 +38,14 @@ export class AppController {
     @Body('Year') year: string,
     @Body('Type') type: string,
     @Body('imdbID') imdbID: string,
-    @Body('Poster') poster: string) {
+    @Body('Poster') poster: string,
+    @Body('userName') userName: string,
+    @Body('token') token: string
+  ) {
 
     return await promiseOrThrow(
+      { userName, token },
+      this.usersService,
       () => this.appService.registerMovie({
         title, year, type, imdbID, poster
       }));

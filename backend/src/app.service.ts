@@ -30,11 +30,7 @@ export class AppService {
   /**
    * Vote for a movie or unvote it.
    */
-  async vote(imdbID: string, userName: string, token: string) {
-    const auth = await this.users.authorized(userName, token);
-    if (!auth) {
-      throw new Error("User not logged in.")
-    }
+  async vote(imdbID: string, userName: string) {
 
     const movie = await this.movieRepo.findOneOrFail({ where: { imdbID } });
 

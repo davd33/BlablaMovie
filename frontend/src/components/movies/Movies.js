@@ -14,8 +14,12 @@ function voteForMovie(movie, cb) {
             const errMsg = r.response.data.message;
             const matchMovieNotFoundErr = errMsg.match(new RegExp(`Could not find any entity of type "Movie" matching:[\\s\\S]*imdbID.*${movie.imdbID}[\\s\\S]*`));
             if (matchMovieNotFoundErr && matchMovieNotFoundErr[0] === errMsg) {
-                axios.post(`http://localhost:3001/register-movie`, movie)
-                    .then(r => console.log(r))
+                axios
+                    .post(`http://localhost:3001/register-movie`, {
+                        ...movie,
+                        userName: userName(),
+                        token: token()
+                    })
                     .catch(r => console.err(r));
 
                 // retry
@@ -30,7 +34,10 @@ export function Movies() {
 
     const m = {"/clear": () => setMovies([])};
     const handleMovieSearch = (e) => m[e.target.value] ? m[e.target.value](e) : axios
-          .get(encodeURI(`http://localhost:3001/find-movie?movieName=${e.target.value}`))
+          .post(encodeURI(`http://localhost:3001/find-movie?movieName=${e.target.value}`), {
+              userName: userName(),
+              token: token()
+          })
           .then(r => { if (r.data.Search) setMovies(r.data.Search); });
 
     const onVoteSuccess = (data) => {
