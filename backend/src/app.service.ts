@@ -84,4 +84,20 @@ export class AppService {
   async registerMovie(movieDto: any) {
     return await this.movieRepo.insert(movieDto);
   }
+
+  async votesLeft(userName: string) {
+
+    const MAX_NUMBER_OF_VOTES = 3;
+
+    const { monday, sunday } = weekPeriod(new Date());
+    const votesMadeCurrentWeek = await this.voteRepo.count({
+      where: {
+        userName,
+        timestampWithTimezone: Between(monday, sunday)
+      }
+    });
+
+    return Math.max(0, Math.min(
+      MAX_NUMBER_OF_VOTES, MAX_NUMBER_OF_VOTES - votesMadeCurrentWeek));
+  }
 }

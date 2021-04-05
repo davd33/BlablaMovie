@@ -20,6 +20,17 @@ export class AppController {
       () => this.appService.searchMovie(movie, userName));
   }
 
+  @Post('votes-left')
+  async votesLeft(
+    @Body('userName') userName: string,
+    @Body('token') token: string
+  ) {
+    return await promiseOrThrow(
+      { userName, token },
+      this.usersService,
+      () => this.appService.votesLeft(userName));
+  }
+
   @Post('vote/:imdbID')
   async voteForMovie(
     @Param('imdbID') imdbID: string,

@@ -2,20 +2,18 @@
 
 The user chooses the movie she loves the most.
 
-* Project
-
-** Specs
+* Specs
 
 In =/specs=, you'll find useful TLA+ specifications for the project.
 
 A specification of what BlablaMovie should do at a high level
 is available [[file:specs/blablamovie.pdf][here]].
 
-** Backend
+* Backend
 
 The REST API in =/backend= handles calls to OMDb to search existing movies.
 
-*** Database setup
+** Database setup
 
 Have an local instance of postgresql running. Create a database named
 =blablamovie= and change the login information in [[file:backend/src/app.module.ts][the app module]] with the
@@ -26,12 +24,19 @@ username: 'postgres',
 password: 'admin',
 #+END_SRC
 
-*** Start
+** Start
 
 #+BEGIN_SRC sh
 npm run start:dev
 #+END_SRC
 
-** Frontend
+* Frontend
 
 A react App is developed in =/frontend=.
+
+* Road map
+
+** TODO control of votes left on the backend
+
+The backend should check whether the user have enough votes
+left for the current week. It's done on frontend for now.
