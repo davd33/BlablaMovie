@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { assert } from './utils';
 import { Movie } from './movie.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './vote.entity';
 import { UsersService } from './users/users.service';
@@ -38,14 +38,27 @@ export class AppService {
 
     const movie = await this.movieRepo.findOneOrFail({ where: { imdbID } });
 
-    const vote = await this.voteRepo.count({ where: { userName, movie } });
+    // We count votes for the current week/user/movie
+    const now = new Date();
+    const today = new Date(`${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`);
+    const mondayThisWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+    const sundayThisWeek = new Date(today.setDate(today.getDate() + 7));
+    sundayThisWeek.setTime(sundayThisWeek.getTime() - 1)
 
-    if (vote === 0) {
+    const foundVote = await this.voteRepo.count({
+      where: {
+        userName,
+        movie,
+        timestampWithTimezone: Between(mondayThisWeek, sundayThisWeek)
+      }
+    });
+
+    if (foundVote === 0) {
       this.voteRepo.insert({ userName, movie });
     } else {
       this.voteRepo.delete({ userName, movie })
     }
-    return { movie, vote };
+    return { movie, foundVote };
   }
 
   /**

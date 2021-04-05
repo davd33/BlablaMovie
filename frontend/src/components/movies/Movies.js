@@ -3,14 +3,13 @@ import {userName, token} from '../../utils';
 import axios from 'axios';
 import './Movies.css';
 
-function voteForMovie(movie) {
-    console.log('vote ', movie);
+function voteForMovie(movie, cb) {
     axios
         .post(encodeURI(`http://localhost:3001/vote/${movie.imdbID}`), {
             userName: userName(),
             token: token()
         })
-        .then(r => console.log(r))
+        .then(r => cb(r.data))
         .catch(r => {
             const errMsg = r.response.data.message;
             const matchMovieNotFoundErr = errMsg.match(new RegExp(`Could not find any entity of type "Movie" matching:[\\s\\S]*imdbID.*${movie.imdbID}[\\s\\S]*`));
@@ -20,7 +19,7 @@ function voteForMovie(movie) {
                     .catch(r => console.err(r));
 
                 // retry
-                voteForMovie(movie);
+                voteForMovie(movie, cb);
             }
         });
 }
@@ -34,6 +33,10 @@ export function Movies() {
           .get(encodeURI(`http://localhost:3001/find-movie?movieName=${e.target.value}`))
           .then(r => { if (r.data.Search) setMovies(r.data.Search); });
 
+    const onVoteSuccess = (data) => {
+        console.log('voted!', data);
+    };
+
     return (
         <div className="find-movies">
           <input type="text" placeholder="search movie" onChange={handleMovieSearch} />
@@ -42,12 +45,11 @@ export function Movies() {
             {movies.length < 1 ? "No movies found..." : ""}
             <ul className="movies-found">
               {movies.map((m, i) => <li key={m.imdbID+i}
-                                                       onClick={() => voteForMovie(m)}
-                                                       className="movie">
-
-                                                     <img src={m.Poster} alt="CLICK HERE TO VOTE" />
-                                                     <h1>{m.Title} ({m.Year})</h1>
-                                                   </li>)}
+                                        onClick={() => voteForMovie(m, onVoteSuccess)}
+                                        className="movie">
+                                      <img src={m.Poster} alt="CLICK HERE TO VOTE" />
+                                      <h1>{m.Title} ({m.Year})</h1>
+                                    </li>)}
             </ul>
           </div>
         </div>
