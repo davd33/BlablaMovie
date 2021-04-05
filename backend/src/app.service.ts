@@ -27,25 +27,30 @@ export class AppService {
       .pipe(map(r => r.data));
   }
 
+  /**
+   * Vote for a movie or unvote it.
+   */
   async vote(imdbID: string, userName: string, token: string) {
     const auth = await this.users.authorized(userName, token);
-    console.log(auth);
+    if (!auth) {
+      throw new Error("User not logged in.")
+    }
 
     const movie = await this.movieRepo.findOneOrFail({ where: { imdbID } });
-    console.log(movie);
 
     const vote = await this.voteRepo.count({ where: { userName, movie } });
-    console.log(vote)
 
     if (vote === 0) {
-      this.voteRepo.insert({
-        userName,
-        movie
-      });
+      this.voteRepo.insert({ userName, movie });
+    } else {
+      this.voteRepo.delete({ userName, movie })
     }
     return { movie, vote };
   }
 
+  /**
+   * Add a movie into our internal movie DB.
+   */
   async registerMovie(movieDto: any) {
     return await this.movieRepo.insert(movieDto);
   }
