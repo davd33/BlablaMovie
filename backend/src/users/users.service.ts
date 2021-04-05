@@ -57,17 +57,11 @@ export class UsersService {
     };
   }
 
-  async loggedIn(name: string): Promise<boolean> {
-    const res = await this.loggedUserRepo.count({ where: { name } });
-    console.log('loggedIn', res);
-    return res === 1;
-  }
-
   /**
    * Verify that the user name and the provided token are registered.
    */
   async authorized(userName: string, token: string): Promise<boolean> {
-    return (await this.loggedUserRepo.count({ where: { name: userName, token: token } })) === 1;
+    return (await this.loggedUserRepo.count({ where: { userName, token } })) === 1;
   }
 
 }

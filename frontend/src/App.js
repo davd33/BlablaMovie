@@ -4,7 +4,7 @@ import './App.css';
 import {Movies} from './components/movies/Movies.js';
 import {Register} from './components/register/Register.js';
 import {Login} from './components/login/Login.js';
-import {loggedIn, token as tokenLS, userName, clearLoginInfo} from './utils';
+import {token as tokenLS, userName, clearLoginInfo} from './utils';
 import {
     BrowserRouter as Router,
     Switch,
@@ -27,7 +27,7 @@ function NavLi({title, path, action}) {
 
 function App() {
 
-    const [token, setToken] = useState(window.localStorage.getItem('token'));
+    const [token, setToken] = useState(tokenLS());
 
     const saveToken = (userNameVal, data, history) => {
         setToken(tokenLS(data.token));

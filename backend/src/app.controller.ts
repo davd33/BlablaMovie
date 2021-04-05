@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AppService } from './app.service';
 import { promiseOrThrow } from './utils';
@@ -24,11 +24,11 @@ export class AppController {
 
   @Post('register-movie')
   async registerMovie(
-    @Body('title') title: string,
-    @Body('year') year: string,
-    @Body('type') type: string,
+    @Body('Title') title: string,
+    @Body('Year') year: string,
+    @Body('Type') type: string,
     @Body('imdbID') imdbID: string,
-    @Body('poster') poster: string) {
+    @Body('Poster') poster: string) {
 
     return await promiseOrThrow(
       () => this.appService.registerMovie({
