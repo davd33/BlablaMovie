@@ -71,7 +71,6 @@ export function Movies() {
           });
 
     const onVoteSuccess = (data) => {
-        console.log('voted!', data);
         const addedVote = data.foundVote === 0;
         setMovies(movies.map(m => m.imdbID === data.movie.imdbID ? {...m, voted: addedVote} : m));
     };
