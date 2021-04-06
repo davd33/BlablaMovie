@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { NO_AUTH_REQUIRED, promiseOrThrow } from 'src/utils';
+import { NO_AUTH_REQUIRED, promiseOrThrow } from '../utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 

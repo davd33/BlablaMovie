@@ -54,3 +54,5 @@ The REST API endpoints should treat safe input.
 ** TODO Fix mobile version css
 
 ** TODO Add tests for REST API
+
+** TODO bug: Winner of the week when no votes yet made

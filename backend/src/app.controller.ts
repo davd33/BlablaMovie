@@ -8,6 +8,11 @@ export class AppController {
   constructor(private readonly appService: AppService,
     private readonly usersService: UsersService) { }
 
+  @Get('ping')
+  ping() {
+    return "Hello World!";
+  }
+
   @Post('find-movie')
   async getFindMovie(
     @Query('movieName') movie: string,
