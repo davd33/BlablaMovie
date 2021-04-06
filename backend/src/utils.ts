@@ -53,11 +53,11 @@ export function getWeekNumber(date: Date) {
 /**
  * Returns the beginning and end dates of the current week.
  */
-export function weekPeriod(date: Date) {
+export function weekPeriod(date: Date): { monday: Date, sunday: Date } {
 
-  const today = new Date(`${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`);
-  const monday = new Date(today.setDate(today.getDate() - today.getDay() + 1));
-  const sunday = new Date(today.setDate(today.getDate() + 7));
+  const today = new Date(`${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`);
+  const monday = new Date(today.setUTCDate(today.getUTCDate() - today.getUTCDay() + 1));
+  const sunday = new Date(today.setUTCDate(today.getUTCDate() + 7));
   sunday.setTime(sunday.getTime() - 1);
 
   return {
